@@ -22,7 +22,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-slate-50 dark:bg-slate-950 font-sans selection:bg-blue-100 dark:selection:bg-blue-900 selection:text-blue-900 dark:selection:text-blue-50">
+    <div className="relative min-h-screen w-full overflow-x-hidden bg-slate-50 dark:bg-slate-950 font-sans selection:bg-blue-100 dark:selection:bg-blue-900 selection:text-blue-900 dark:selection:text-blue-50">
       {/* Entry Animation */}
       <AnimatePresence>
         {loading && <Preloader onComplete={handleLoadingComplete} />}
