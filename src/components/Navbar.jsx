@@ -9,7 +9,7 @@ const navLinks = [
   { label: 'Projects', href: '#projects' },
   { label: 'Skills', href: '#skills' },
   { label: 'Certifications', href: '#certifications' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Contact', href: '#contact' }
 ];
 
 export default function Navbar() {
@@ -42,11 +42,11 @@ export default function Navbar() {
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'py-4' : 'py-8'}`}>
       <div className="max-w-6xl mx-auto px-6">
         <nav className={`glass-card px-4 py-3 flex items-center justify-between transition-all duration-300 ${scrolled ? 'shadow-lg' : 'shadow-sm'}`}>
-          
+
           {/* Logo / Name */}
           <div className="px-6">
-            <a 
-              href="#home" 
+            <a
+              href="#home"
               onClick={(e) => { e.preventDefault(); scrollTo('#home'); }}
               className="text-xl font-bold text-slate-900 dark:text-white tracking-tight"
             >
@@ -77,19 +77,29 @@ export default function Navbar() {
               );
             })}
           </div>
-
           <div className="flex items-center gap-4">
-            <ThemeToggle />
-            {/* Mobile Menu Button */}
-            <button 
-              className="md:hidden p-2 text-slate-600 dark:text-slate-300"
-              onClick={() => setMenuOpen(!menuOpen)}
-            >
-              <span className="text-2xl">{menuOpen ? '✕' : '☰'}</span>
-            </button>
-          </div>
-        </nav>
-      </div>
+  <ThemeToggle />
+
+  {/* Download CV */}
+  <a
+    href="/SushanAryal_CV.pdf"
+    download
+    className="hidden md:inline-block px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
+  >
+    Download CV
+  </a>
+
+  {/* Mobile Menu Button */}
+  <button
+    className="md:hidden p-2 text-slate-600 dark:text-slate-300"
+    onClick={() => setMenuOpen(!menuOpen)}
+  >
+    <span className="text-2xl">{menuOpen ? '✕' : '☰'}</span>
+  </button>
+</div>
+</nav>
+</div>
+         
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>

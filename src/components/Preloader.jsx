@@ -74,7 +74,7 @@ const Preloader = ({ onComplete }) => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            Portfolio Deployment In Progress
+           Sushan's Portfolio Deployment Is In Progress ...
           </motion.h2>
           <div className="flex items-center justify-center gap-2 text-blue-600 font-mono text-sm tracking-widest uppercase">
             <span className="relative flex h-2 w-2">
