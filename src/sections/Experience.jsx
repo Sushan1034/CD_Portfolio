@@ -27,7 +27,7 @@ function ExperienceItem({ exp, index }) {
   const isImagePath = exp.logo.startsWith('/');
 
   return (
-    <div className="relative pl-12 md:pl-20 pb-16 border-l-2 border-slate-200 dark:border-slate-800 last:pb-0 ml-6 md:ml-12 group">
+    <div className="relative pl-8 md:pl-20 pb-16 border-l-2 border-slate-200 dark:border-slate-800 last:pb-0 ml-4 md:ml-12 group">
       {/* Timeline Dot & Pulsing Effect */}
       <div className="absolute -left-[11px] top-0">
         <div className="relative flex items-center justify-center">
@@ -37,21 +37,21 @@ function ExperienceItem({ exp, index }) {
       </div>
 
       <motion.div
-        initial={{ opacity: 0, x: 30 }}
+        initial={{ opacity: 0, x: 20 }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6, delay: index * 0.15, ease: "easeOut" }}
-        whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
-        className="relative bg-white/70 dark:bg-slate-900/50 backdrop-blur-xl p-8 md:p-10 rounded-[2.5rem] border border-slate-100 dark:border-slate-800/60 shadow-xl shadow-slate-200/40 dark:shadow-none hover:shadow-2xl hover:shadow-blue-200/30 dark:hover:shadow-cyan-900/20 transition-all group/card overflow-hidden"
+        whileHover={{ scale: 1.005, transition: { duration: 0.2 } }}
+        className="relative bg-white/70 dark:bg-slate-900/50 backdrop-blur-xl p-6 md:p-10 rounded-3xl md:rounded-[2.5rem] border border-slate-100 dark:border-slate-800/60 shadow-xl shadow-slate-200/40 dark:shadow-none hover:shadow-2xl hover:shadow-blue-200/30 dark:hover:shadow-cyan-900/20 transition-all group/card overflow-hidden"
       >
         {/* Decorative corner element */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 dark:bg-cyan-900/20 rounded-full blur-3xl -mr-16 -mt-16 opacity-0 group-hover/card:opacity-100 transition-opacity" />
 
-        <div className="flex flex-col md:flex-row items-start md:items-center gap-8 mb-10">
-          <div className="flex flex-col md:flex-row items-center gap-6">
+        <div className="flex flex-col items-start gap-6 md:gap-8 mb-8 md:mb-10">
+          <div className="flex flex-col md:flex-row items-center md:items-start gap-6 w-full">
             <motion.div
-              whileHover={{ rotate: 5, scale: 1.1 }}
-              className="w-24 h-24 md:w-32 md:h-32 bg-white dark:bg-slate-900/80 rounded-3xl flex items-center justify-center overflow-hidden border-2 border-slate-50 dark:border-slate-800 shadow-2xl p-4 shrink-0 transition-transform"
+              whileHover={{ rotate: 5, scale: 1.05 }}
+              className="w-20 h-20 md:w-32 md:h-32 bg-white dark:bg-slate-900/80 rounded-2xl md:rounded-3xl flex items-center justify-center overflow-hidden border-2 border-slate-50 dark:border-slate-800 shadow-xl p-3 md:p-4 shrink-0 transition-transform"
             >
               {isImagePath ? (
                 <img
@@ -60,27 +60,27 @@ function ExperienceItem({ exp, index }) {
                   className="w-full h-full object-contain filter drop-shadow-sm dark:drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]"
                 />
               ) : (
-                <span className="text-4xl">{exp.logo}</span>
+                <span className="text-3xl md:text-4xl">{exp.logo}</span>
               )}
             </motion.div>
 
-            <div className="text-center md:text-left">
-              <h3 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2 tracking-tight">
+            <div className="text-center md:text-left flex-1">
+              <h3 className="text-xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2 tracking-tight">
                 {exp.role}
               </h3>
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 mt-1">
-                <span className="px-4 py-1.5 rounded-full bg-blue-600 dark:bg-cyan-500/20 text-white dark:text-cyan-400 font-bold text-sm shadow-lg shadow-blue-200 dark:shadow-none border border-transparent dark:border-cyan-500/30">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 md:gap-3 mt-1">
+                <span className="px-3 md:px-4 py-1 rounded-full bg-blue-600 dark:bg-cyan-500/20 text-white dark:text-cyan-400 font-bold text-[10px] md:text-sm shadow-lg shadow-blue-200 dark:shadow-none border border-transparent dark:border-cyan-500/30 uppercase tracking-wider">
                   {exp.company}
                 </span>
-                <span className="flex items-center gap-1.5 text-slate-400 dark:text-slate-500 font-medium text-sm">
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <span className="flex items-center gap-1 text-slate-400 dark:text-slate-500 font-medium text-[10px] md:text-sm">
+                  <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                   {exp.location}
                 </span>
-                <span className="flex items-center gap-1.5 text-slate-400 dark:text-slate-500 font-medium text-sm">
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <span className="flex items-center gap-1 text-slate-400 dark:text-slate-500 font-medium text-[10px] md:text-sm">
+                  <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                   {exp.dateRange}
@@ -90,20 +90,20 @@ function ExperienceItem({ exp, index }) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           {exp.responsibilities.map((item, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 0.3 + (i * 0.1) }}
-              className="flex items-start gap-4 p-4 rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors border border-transparent hover:border-slate-100 dark:hover:border-slate-700/50 group/item"
+              transition={{ delay: 0.3 + (i * 0.05) }}
+              className="flex items-start gap-3 md:gap-4 p-3 md:p-4 rounded-xl md:rounded-2xl hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors border border-transparent hover:border-slate-100 dark:hover:border-slate-700/50 group/item"
             >
-              <div className="mt-1.5 w-6 h-6 rounded-lg bg-blue-50 dark:bg-cyan-500/10 flex items-center justify-center shrink-0 border border-blue-100 dark:border-cyan-500/20 group-hover/item:border-blue-200 dark:group-hover/item:border-cyan-500/40 transition-colors">
-                <div className="w-2 h-2 rounded-full bg-blue-600 dark:bg-cyan-400 shadow-[0_0_8px_rgba(37,99,235,0.6)] dark:shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
+              <div className="mt-1.5 w-5 h-5 md:w-6 md:h-6 rounded-lg bg-blue-50 dark:bg-cyan-500/10 flex items-center justify-center shrink-0 border border-blue-100 dark:border-cyan-500/20 group-hover/item:border-blue-200 dark:group-hover/item:border-cyan-500/40 transition-colors">
+                <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-blue-600 dark:bg-cyan-400 shadow-[0_0_8px_rgba(37,99,235,0.6)] dark:shadow-[0_0_8px_rgba(34,211,238,0.8)]" />
               </div>
-              <p className="text-slate-600 dark:text-slate-300 text-sm md:text-base leading-relaxed">
+              <p className="text-slate-600 dark:text-slate-300 text-xs md:text-base leading-relaxed">
                 {item}
               </p>
             </motion.div>

@@ -67,16 +67,16 @@ const Preloader = ({ onComplete }) => {
         <div className="absolute bottom-[-10%] right-[-5%] w-[40%] h-[40%] bg-slate-200/50 rounded-full blur-[120px]" />
       </div>
 
-      <div className="relative z-10 w-full max-w-7xl px-10">
-        <div className="text-center mb-24">
+      <div className="relative z-10 w-full max-w-5xl px-4 sm:px-10">
+        <div className="text-center mb-16 md:mb-24">
           <motion.h2
-            className="text-slate-900 font-bold text-2xl md:text-3xl tracking-tight mb-4"
+            className="text-slate-900 font-bold text-xl md:text-3xl tracking-tight mb-4"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
           >
            Sushan's Portfolio Deployment Is In Progress ...
           </motion.h2>
-          <div className="flex items-center justify-center gap-2 text-blue-600 font-mono text-sm tracking-widest uppercase">
+          <div className="flex items-center justify-center gap-2 text-blue-600 font-mono text-xs md:text-sm tracking-widest uppercase">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
@@ -87,11 +87,11 @@ const Preloader = ({ onComplete }) => {
 
         <div className="relative">
           {/* Pipeline Track */}
-          <div className="absolute top-1/2 left-0 w-full h-1.5 bg-slate-200 -translate-y-1/2 rounded-full" />
+          <div className="absolute top-1/2 left-0 w-full h-1 bg-slate-200 -translate-y-1/2 rounded-full" />
 
           {/* Active Progress Line */}
           <motion.div
-            className="absolute top-1/2 left-0 h-1.5 bg-blue-600 -translate-y-1/2 rounded-full shadow-[0_0_15px_rgba(37,99,235,0.3)]"
+            className="absolute top-1/2 left-0 h-1 bg-blue-600 -translate-y-1/2 rounded-full shadow-[0_0_15px_rgba(37,99,235,0.3)]"
             initial={{ width: '0%' }}
             animate={{ width: `${(Math.min(currentStage, stages.length - 1) / (stages.length - 1)) * 100}%` }}
             transition={{ duration: 0.8, ease: "circOut" }}
@@ -105,26 +105,25 @@ const Preloader = ({ onComplete }) => {
               return (
                 <div key={stage.id} className="flex flex-col items-center">
                   <motion.div
-                    className={`w-20 h-20 md:w-24 md:h-24 rounded-2xl flex items-center justify-center border-2 transition-all duration-500 relative ${isActive
+                    className={`w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 rounded-lg md:rounded-2xl flex items-center justify-center border-2 transition-all duration-500 relative ${isActive
                         ? 'bg-white border-blue-600 shadow-xl shadow-blue-900/10'
                         : 'bg-white border-slate-200'
-                      }`}
+                       }`}
                     animate={{
-                      scale: isCurrent ? 1.2 : 1,
-                      y: isCurrent ? -10 : 0,
-                      rotate: isCurrent ? [0, -5, 5, 0] : 0
+                      scale: isCurrent ? 1.15 : 1,
+                      y: isCurrent ? -8 : 0,
                     }}
                   >
                     {/* Pulsing indicator */}
                     {isCurrent && (
                       <motion.div
-                        className="absolute inset-0 rounded-2xl border-4 border-blue-200"
+                        className="absolute inset-0 rounded-lg md:rounded-2xl border-4 border-blue-200"
                         animate={{ scale: [1, 1.3], opacity: [0.5, 0] }}
                         transition={{ repeat: Infinity, duration: 1.5 }}
                       />
                     )}
 
-                    <div className="p-3 w-full h-full flex items-center justify-center">
+                    <div className="p-2 md:p-3 w-full h-full flex items-center justify-center">
                       <img
                         src={stage.icon}
                         alt={stage.label}
@@ -133,13 +132,13 @@ const Preloader = ({ onComplete }) => {
                     </div>
                   </motion.div>
 
-                  <div className="absolute mt-28 md:mt-32 text-center w-32">
-                    <p className={`text-[10px] md:text-xs font-bold uppercase tracking-widest ${isActive ? 'text-slate-900' : 'text-slate-400'}`}>
+                  <div className="absolute mt-14 sm:mt-18 md:mt-32 text-center w-20 sm:w-24 md:w-32">
+                    <p className={`text-[8px] md:text-xs font-bold uppercase tracking-widest ${isActive ? 'text-slate-900' : 'text-slate-400'}`}>
                       {stage.label}
                     </p>
                     {isCurrent && (
                       <motion.div
-                        className="w-full bg-slate-100 h-1 mt-2 rounded-full overflow-hidden"
+                        className="w-full bg-slate-100 h-0.5 md:h-1 mt-1 md:mt-2 rounded-full overflow-hidden"
                       >
                         <motion.div
                           className="h-full bg-blue-600"

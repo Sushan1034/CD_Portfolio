@@ -100,78 +100,85 @@ export default function About() {
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
-          {/* Pipeline Track */}
-          <div className="absolute top-1/2 left-0 w-full h-1 bg-slate-200 dark:bg-slate-800 hidden md:block -translate-y-1/2 rounded-full" />
+        <div 
+          className="relative max-w-5xl mx-auto py-12"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
+          {/* Pipeline Track - Desktop */}
+          <div className="absolute top-[48px] md:top-1/2 left-0 w-full h-1 bg-slate-200 dark:bg-slate-800 -translate-y-1/2 rounded-full hidden md:block" />
           
-          {/* Progress Line */}
+          {/* Progress Line - Desktop */}
           <motion.div 
-            className="absolute top-1/2 left-0 h-1 bg-blue-600 hidden md:block -translate-y-1/2 rounded-full shadow-[0_0_10px_rgba(37,99,235,0.4)]"
+            className="absolute top-[48px] md:top-1/2 left-0 h-1 bg-blue-600 -translate-y-1/2 rounded-full shadow-[0_0_10px_rgba(37,99,235,0.4)] hidden md:block"
             initial={{ width: "0%" }}
             animate={{ width: `${(currentStep / (stages.length - 1)) * 100}%` }}
             transition={{ duration: 0.8, ease: "easeInOut" }}
           />
 
-          {/* Stages Row */}
-          <div className="grid grid-cols-7 relative z-20 h-16">
-            {stages.map((stage, index) => {
-              const isActive = index === currentStep;
-              const isPast = index < currentStep;
+          {/* Stages Row - Scrollable on mobile */}
+          <div className="relative overflow-x-auto pb-4 md:pb-0 hide-scrollbar">
+            <div className="flex md:grid md:grid-cols-7 relative z-20 min-w-max md:min-w-0 h-24 md:h-16 gap-4 md:gap-0 px-4 md:px-0">
+              {stages.map((stage, index) => {
+                const isActive = index === currentStep;
+                const isPast = index < currentStep;
 
-              return (
-                <div key={stage.id} className="flex flex-col items-center relative group">
-                  <div className="relative">
-                  <motion.button
-                    onClick={() => setCurrentStep(index)}
-                    className={`w-12 h-12 md:w-16 md:h-16 rounded-2xl flex items-center justify-center text-xl transition-all duration-500 border-4 ${
-                      isActive 
-                      ? 'bg-white dark:bg-slate-900 border-blue-600 shadow-xl shadow-blue-200 dark:shadow-blue-900/20 text-blue-600 dark:text-blue-400' 
-                      : isPast 
-                      ? 'bg-blue-600 border-blue-600 text-white' 
-                      : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500 group-hover:border-blue-300 dark:group-hover:border-blue-500'
-                    }`}
-                    animate={{ 
-                      scale: isActive ? 1.2 : 1,
-                      y: isActive ? -5 : 0
-                    }}
-                  >
-                    {isActive ? (
-                      <motion.span
-                        initial={{ scale: 0.5, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
+                return (
+                  <div key={stage.id} className="flex flex-col items-center relative group w-20 md:w-auto">
+                    <div className="relative">
+                      <motion.button
+                        onClick={() => setCurrentStep(index)}
+                        className={`w-12 h-12 md:w-16 md:h-16 rounded-2xl flex items-center justify-center text-xl transition-all duration-500 border-4 ${
+                          isActive 
+                          ? 'bg-white dark:bg-slate-900 border-blue-600 shadow-xl shadow-blue-200 dark:shadow-blue-900/20 text-blue-600 dark:text-blue-400' 
+                          : isPast 
+                          ? 'bg-blue-600 border-blue-600 text-white' 
+                          : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-500 group-hover:border-blue-300 dark:group-hover:border-blue-500'
+                        }`}
+                        animate={{ 
+                          scale: isActive ? 1.15 : 1,
+                          y: isActive ? -4 : 0
+                        }}
                       >
-                        {stage.icon}
-                      </motion.span>
-                    ) : (
-                      <span className="font-bold text-sm">{index + 1}</span>
-                    )}
+                        {isActive ? (
+                          <motion.span
+                            initial={{ scale: 0.5, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                          >
+                            {stage.icon}
+                          </motion.span>
+                        ) : (
+                          <span className="font-bold text-sm">{index + 1}</span>
+                        )}
 
-                    {/* Active Glow */}
-                    {isActive && (
-                      <motion.div 
-                        className="absolute inset-0 rounded-2xl bg-blue-400/20 blur-md"
-                        animate={{ scale: [1, 1.4], opacity: [0.5, 0] }}
-                        transition={{ repeat: Infinity, duration: 1.5 }}
-                      />
-                    )}
-                  </motion.button>
-                  </div>
+                        {/* Active Glow */}
+                        {isActive && (
+                          <motion.div 
+                            className="absolute inset-0 rounded-2xl bg-blue-400/20 blur-md"
+                            animate={{ scale: [1, 1.4], opacity: [0.5, 0] }}
+                            transition={{ repeat: Infinity, duration: 1.5 }}
+                          />
+                        )}
+                      </motion.button>
+                    </div>
 
-                  {/* Desktop Title Labels */}
-                  <div className="hidden md:block mt-6 text-center">
-                    <p className={`text-xs font-bold uppercase tracking-widest transition-colors duration-300 ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>
-                      {stage.title}
-                    </p>
-                  </div>
+                    {/* Desktop Title Labels */}
+                    <div className="hidden md:block mt-6 text-center">
+                      <p className={`text-[10px] font-bold uppercase tracking-widest transition-colors duration-300 ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400 dark:text-slate-500'}`}>
+                        {stage.title}
+                      </p>
+                    </div>
 
-                  {/* Mobile Mobile Labels */}
-                  <div className="md:hidden">
-                    <p className={`text-sm font-bold ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400'}`}>
-                      {stage.title}
-                    </p>
+                    {/* Mobile Labels */}
+                    <div className="md:hidden mt-2 text-center w-full overflow-hidden">
+                      <p className={`text-[9px] font-bold uppercase tracking-tighter truncate ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-slate-500 dark:text-slate-400'}`}>
+                        {stage.title}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
 
           {/* Active Stage Card */}
@@ -253,6 +260,7 @@ export default function About() {
              </p>
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

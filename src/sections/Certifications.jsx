@@ -72,7 +72,7 @@ export default function Certifications() {
         <div className="flex flex-col lg:flex-row items-center justify-center gap-20 lg:gap-32">
           {/* 3D Circular Animation Stage */}
           <div
-            className="relative w-[300px] h-[300px] md:w-[450px] md:h-[450px] perspective-2000 flex items-center justify-center"
+            className="relative w-[280px] h-[280px] xs:w-[320px] xs:h-[320px] md:w-[450px] md:h-[450px] perspective-2000 flex items-center justify-center"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
@@ -87,6 +87,9 @@ export default function Certifications() {
               {certifications.map((cert, index) => {
                 const angle = index * 90;
                 const isActive = index === activeIndex;
+                
+                // Responsive translateZ
+                const translateZ = typeof window !== 'undefined' && window.innerWidth < 768 ? 140 : 250;
 
                 return (
                   <motion.div
@@ -94,7 +97,7 @@ export default function Certifications() {
                     className="absolute inset-0 flex items-center justify-center"
                     style={{
                       transformStyle: 'preserve-3d',
-                      transform: `rotateY(${angle}deg) translateZ(250px)`,
+                      transform: `rotateY(${angle}deg) translateZ(${translateZ}px)`,
                       backfaceVisibility: 'hidden',
                     }}
                   >
@@ -102,7 +105,7 @@ export default function Certifications() {
                       href={cert.link}
                       target="_blank"
                       rel="noreferrer"
-                      className={`block w-40 h-40 md:w-64 md:h-64 transition-all duration-700 ${isActive ? 'scale-110 opacity-100 grayscale-0' : 'scale-90 opacity-40 grayscale blur-[2px]'
+                      className={`block w-32 h-32 xs:w-40 xs:h-40 md:w-64 md:h-64 transition-all duration-700 ${isActive ? 'scale-110 opacity-100 grayscale-0' : 'scale-90 opacity-40 grayscale blur-[2px]'
                         }`}
                       onClick={() => setActiveIndex(index)}
                     >

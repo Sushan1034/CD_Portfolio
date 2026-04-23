@@ -36,9 +36,9 @@ export default function App() {
           <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
             <div className="absolute inset-0 bg-grid-pattern opacity-[0.4] dark:opacity-[0.1]" />
             <FloatingBackground />
-            <div className="absolute -top-[10%] -left-[5%] w-[40%] h-[40%] bg-blue-100/50 dark:bg-blue-900/20 rounded-full blur-[120px]" />
-            <div className="absolute top-[30%] right-[-5%] w-[35%] h-[35%] bg-slate-200/50 dark:bg-slate-800/20 rounded-full blur-[100px]" />
-            <div className="absolute bottom-[10%] left-[10%] w-[30%] h-[30%] bg-blue-50/50 dark:bg-blue-900/20 rounded-full blur-[120px]" />
+            <div className="absolute -top-[10%] -left-[5%] w-[60%] md:w-[40%] h-[40%] bg-blue-100/50 dark:bg-blue-900/20 rounded-full blur-[80px] md:blur-[120px]" />
+            <div className="absolute top-[30%] right-[-5%] w-[50%] md:w-[35%] h-[35%] bg-slate-200/50 dark:bg-slate-800/20 rounded-full blur-[60px] md:blur-[100px]" />
+            <div className="absolute bottom-[10%] left-[10%] w-[45%] md:w-[30%] h-[30%] bg-blue-50/50 dark:bg-blue-900/20 rounded-full blur-[80px] md:blur-[120px]" />
           </div>
 
           <motion.main

@@ -91,10 +91,15 @@ export default function Navbar() {
 
   {/* Mobile Menu Button */}
   <button
-    className="md:hidden p-2 text-slate-600 dark:text-slate-300"
+    className="md:hidden p-2.5 -mr-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
     onClick={() => setMenuOpen(!menuOpen)}
+    aria-label="Toggle menu"
   >
-    <span className="text-2xl">{menuOpen ? '✕' : '☰'}</span>
+    <div className="w-6 h-6 flex flex-col justify-center items-center gap-1.5">
+      <span className={`block w-5 h-0.5 bg-current transition-transform duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+      <span className={`block w-5 h-0.5 bg-current transition-opacity duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
+      <span className={`block w-5 h-0.5 bg-current transition-transform duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+    </div>
   </button>
 </div>
 </nav>
@@ -105,22 +110,34 @@ export default function Navbar() {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="absolute top-full left-0 right-0 mx-6 mt-2 glass-card p-4 md:hidden"
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ type: "spring", damping: 25, stiffness: 200 }}
+            className="absolute top-full left-0 right-0 mx-4 mt-2 glass-card p-4 md:hidden z-50 shadow-2xl"
           >
-            <div className="flex flex-col gap-2">
-              {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) => { e.preventDefault(); scrollTo(link.href); }}
-                  className={`px-4 py-3 rounded-xl text-sm font-semibold ${activeSection === link.href.replace('#', '') ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : 'text-slate-600 dark:text-slate-300'}`}
-                >
-                  {link.label}
-                </a>
-              ))}
+            <div className="flex flex-col gap-1">
+              {navLinks.map((link) => {
+                const isActive = activeSection === link.href.replace('#', '');
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={(e) => { e.preventDefault(); scrollTo(link.href); }}
+                    className={`px-4 py-3.5 rounded-xl text-base font-semibold transition-colors ${isActive ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
+                  >
+                    {link.label}
+                  </a>
+                );
+              })}
+              <div className="h-px bg-slate-100 dark:bg-slate-800 my-2" />
+              <a
+                href="/SushanAryal_CV.pdf"
+                download
+                className="w-full px-4 py-4 bg-blue-600 text-white rounded-xl font-bold text-center hover:bg-blue-700 transition shadow-lg shadow-blue-200 dark:shadow-none"
+              >
+                Download CV
+              </a>
             </div>
           </motion.div>
         )}

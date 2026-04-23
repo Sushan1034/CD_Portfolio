@@ -212,7 +212,7 @@ export default function Skills() {
               </motion.div>
 
               {/* Cards grid */}
-              <div className={`grid gap-3 ${
+              <div className={`grid gap-2 md:gap-3 ${
                 catIndex === 0
                   ? 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6'
                   : 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4'

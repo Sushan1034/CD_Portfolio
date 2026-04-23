@@ -64,30 +64,30 @@ function ProjectCard({ project, index }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
-      className="group relative glass-card p-8 flex flex-col h-full transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 overflow-hidden dark:bg-slate-900/80 dark:border-slate-800 dark:hover:border-blue-900"
+      className="group relative glass-card p-6 md:p-8 flex flex-col h-full transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 overflow-hidden dark:bg-slate-900/80 dark:border-slate-800 dark:hover:border-blue-900"
     >
       {/* Decorative background element */}
-      <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl group-hover:bg-blue-500/10 transition-colors duration-500" />
+      <div className="absolute top-0 right-0 -mr-8 -mt-8 w-24 h-24 md:w-32 md:h-32 bg-blue-500/5 rounded-full blur-3xl group-hover:bg-blue-500/10 transition-colors duration-500" />
 
       <div className="relative z-10 flex-1">
-        <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
+        <h3 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
           {project.title}
         </h3>
 
-        <p className="text-slate-600 dark:text-slate-300 mb-6 font-medium leading-tight">
+        <p className="text-sm md:text-base text-slate-600 dark:text-slate-300 mb-6 font-medium leading-tight">
           {project.description}
         </p>
 
         <div className="space-y-4 mb-8">
           <div>
-            <span className="text-[10px] uppercase tracking-widest font-bold text-slate-400 block mb-1">Impact & Details</span>
-            <p className="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            <span className="text-[9px] md:text-[10px] uppercase tracking-widest font-bold text-slate-400 block mb-1">Impact & Details</span>
+            <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 leading-relaxed line-clamp-4">
               {project.details}
             </p>
           </div>
           <div>
-            <span className="text-[10px] uppercase tracking-widest font-bold text-slate-400 block mb-1">Best Use Case</span>
-            <p className="text-sm text-slate-500 dark:text-slate-400 italic">
+            <span className="text-[9px] md:text-[10px] uppercase tracking-widest font-bold text-slate-400 block mb-1">Best Use Case</span>
+            <p className="text-xs md:text-sm text-slate-500 dark:text-slate-400 italic line-clamp-2">
               "{project.usecase}"
             </p>
           </div>
@@ -95,7 +95,7 @@ function ProjectCard({ project, index }) {
 
         <div className="flex flex-wrap gap-2 mt-auto">
           {project.tech.map((t) => (
-            <span key={t} className="px-2.5 py-1 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-[10px] font-bold rounded-md border border-slate-100 dark:border-slate-700 uppercase tracking-wider group-hover:border-blue-100 dark:group-hover:border-blue-900/50 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20 transition-colors duration-300">
+            <span key={t} className="px-2 py-0.5 md:px-2.5 md:py-1 bg-slate-50 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-[9px] md:text-[10px] font-bold rounded-md border border-slate-100 dark:border-slate-700 uppercase tracking-wider group-hover:border-blue-100 dark:group-hover:border-blue-900/50 group-hover:bg-blue-50 dark:group-hover:bg-blue-900/20 transition-colors duration-300">
               {t}
             </span>
           ))}
