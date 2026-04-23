@@ -78,33 +78,33 @@ export default function Navbar() {
             })}
           </div>
           <div className="flex items-center gap-4">
-  <ThemeToggle />
+            <ThemeToggle />
 
-  {/* Download CV */}
-  <a
-    href="/SushanAryal_CV.pdf"
-    download
-    className="hidden md:inline-block px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
-  >
-    Download CV
-  </a>
+            {/* Download CV */}
+            <a
+              href="/SushanAryal_CV.pdf"
+              download
+              className="hidden md:inline-block px-4 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition"
+            >
+              Download CV
+            </a>
 
-  {/* Mobile Menu Button */}
-  <button
-    className="md:hidden p-2.5 -mr-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
-    onClick={() => setMenuOpen(!menuOpen)}
-    aria-label="Toggle menu"
-  >
-    <div className="w-6 h-6 flex flex-col justify-center items-center gap-1.5">
-      <span className={`block w-5 h-0.5 bg-current transition-transform duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
-      <span className={`block w-5 h-0.5 bg-current transition-opacity duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
-      <span className={`block w-5 h-0.5 bg-current transition-transform duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
-    </div>
-  </button>
-</div>
-</nav>
-</div>
-         
+            {/* Mobile Menu Button */}
+            <button
+              className="md:hidden p-2.5 -mr-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle menu"
+            >
+              <div className="w-6 h-6 flex flex-col justify-center items-center gap-1.5">
+                <span className={`block w-5 h-0.5 bg-current transition-transform duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`} />
+                <span className={`block w-5 h-0.5 bg-current transition-opacity duration-300 ${menuOpen ? 'opacity-0' : ''}`} />
+                <span className={`block w-5 h-0.5 bg-current transition-transform duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`} />
+              </div>
+            </button>
+          </div>
+        </nav>
+      </div>
+
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>

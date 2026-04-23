@@ -22,10 +22,10 @@ const stages = [
     label: 'SonarQube Test',
     icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sonarqube/sonarqube-original.svg'
   },
-  { 
-    id: 'trivy', 
-    label: 'Trivy Scan', 
-    icon: 'https://avatars.githubusercontent.com/u/12783832?v=4' 
+  {
+    id: 'trivy',
+    label: 'Trivy Scan',
+    icon: 'https://avatars.githubusercontent.com/u/12783832?v=4'
   },
   {
     id: 'aws',
@@ -74,7 +74,7 @@ const Preloader = ({ onComplete }) => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-           Sushan's Portfolio Deployment Is In Progress ...
+            Sushan's Portfolio Deployment Is In Progress ...
           </motion.h2>
           <div className="flex items-center justify-center gap-2 text-blue-600 font-mono text-xs md:text-sm tracking-widest uppercase">
             <span className="relative flex h-2 w-2">
@@ -106,9 +106,9 @@ const Preloader = ({ onComplete }) => {
                 <div key={stage.id} className="flex flex-col items-center">
                   <motion.div
                     className={`w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 rounded-lg md:rounded-2xl flex items-center justify-center border-2 transition-all duration-500 relative ${isActive
-                        ? 'bg-white border-blue-600 shadow-xl shadow-blue-900/10'
-                        : 'bg-white border-slate-200'
-                       }`}
+                      ? 'bg-white border-blue-600 shadow-xl shadow-blue-900/10'
+                      : 'bg-white border-slate-200'
+                      }`}
                     animate={{
                       scale: isCurrent ? 1.15 : 1,
                       y: isCurrent ? -8 : 0,
@@ -133,7 +133,7 @@ const Preloader = ({ onComplete }) => {
                   </motion.div>
 
                   <div className="absolute mt-14 sm:mt-18 md:mt-32 text-center w-20 sm:w-24 md:w-32">
-                    <p className={`text-[8px] md:text-xs font-bold uppercase tracking-widest ${isActive ? 'text-slate-900' : 'text-slate-400'}`}>
+                    <p className={`hidden md:block text-[8px] md:text-xs font-bold uppercase tracking-widest ${isActive ? 'text-slate-900' : 'text-slate-400'}`}>
                       {stage.label}
                     </p>
                     {isCurrent && (

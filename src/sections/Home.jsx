@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <section
       id="home"
-      className="relative min-h-[90vh] flex items-center overflow-hidden"
+      className="relative min-h-screen flex items-center overflow-hidden pt-28 md:pt-0"
     >
       <div className="section-container relative z-10 w-full">
         <div className="flex flex-col md:flex-row items-center md:items-start gap-12 lg:gap-20 text-center md:text-left">
