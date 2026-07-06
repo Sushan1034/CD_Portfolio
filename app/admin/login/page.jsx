@@ -37,9 +37,9 @@ export default function AdminLoginPage() {
       }
 
       if (data?.session) {
-        const { access_token, expires_in } = data.session;
-        // Save access token in browser cookie for middleware route guards
-        document.cookie = `sb-access-token=${access_token}; path=/; max-age=${expires_in}; SameSite=Lax; Secure`;
+        const { access_token } = data.session;
+        // Save access token in browser cookie for middleware route guards (expires strictly in 1 hour)
+        document.cookie = `sb-access-token=${access_token}; path=/; max-age=3600; SameSite=Lax; Secure`;
         router.push('/admin');
       } else {
         setErrorMsg('Authentication succeeded but session could not be established.');

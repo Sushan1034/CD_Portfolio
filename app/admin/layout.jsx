@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { supabase } from '../../lib/supabase';
 import Link from 'next/link';
@@ -7,6 +8,32 @@ import Link from 'next/link';
 export default function AdminLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [checkingAuth, setCheckingAuth] = useState(true);
+
+  useEffect(() => {
+    if (pathname === '/admin/login') {
+      setCheckingAuth(false);
+      return;
+    }
+
+    async function checkUser() {
+      // Check local cookie presence (valid for 1 hour only)
+      const hasCookie = document.cookie.split(';').some((item) => item.trim().startsWith('sb-access-token='));
+      if (!hasCookie) {
+        await supabase.auth.signOut(); // Wipe any remaining supabase session from client cache
+        router.push('/admin/login');
+        return;
+      }
+
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        router.push('/admin/login');
+        return;
+      }
+      setCheckingAuth(false);
+    }
+    checkUser();
+  }, [pathname, router]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -16,6 +43,14 @@ export default function AdminLayout({ children }) {
 
   if (pathname === '/admin/login') {
     return <>{children}</>;
+  }
+
+  if (checkingAuth) {
+    return (
+      <div className="min-h-screen bg-slate-950 text-white flex items-center justify-center">
+        <span className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
   }
 
   return (
