@@ -1,26 +1,56 @@
-import { useState, useCallback } from 'react';
+'use client';
+
+import { useState, useCallback, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import Preloader from './components/Preloader';
-import FloatingBackground from './components/FloatingBackground';
-import Navbar from './components/Navbar';
-import Home from './sections/Home';
-import Experience from './sections/Experience';
-import Projects from './sections/Projects';
-import Certifications from './sections/Certifications';
-import InstagramCreation from './sections/InstagramCreation';
-import Training from './sections/Training';
-import Contact from './sections/Contact';
+import Preloader from '../src/components/Preloader';
+import FloatingBackground from '../src/components/FloatingBackground';
+import Navbar from '../src/components/Navbar';
+import Home from '../src/sections/Home';
+import Experience from '../src/sections/Experience';
+import Projects from '../src/sections/Projects';
+import Certifications from '../src/sections/Certifications';
+import InstagramCreation from '../src/sections/InstagramCreation';
+import Training from '../src/sections/Training';
+import Contact from '../src/sections/Contact';
 
-import ScrollToTop from './components/ScrollToTop';
-import AIChatbot from './components/AIChatbot';
-import SectionDivider from './components/SectionDivider';
+import ScrollToTop from '../src/components/ScrollToTop';
+import AIChatbot from '../src/components/AIChatbot';
+import SectionDivider from '../src/components/SectionDivider';
 
-export default function App() {
+export default function MainPortfolioLayout({ data }) {
   const [loading, setLoading] = useState(true);
 
+  // Skip preloader if it has already run in this session
+  useEffect(() => {
+    if (typeof window !== 'undefined' && sessionStorage.getItem('preloader_run') === 'true') {
+      setLoading(false);
+    }
+  }, []);
+
   const handleLoadingComplete = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('preloader_run', 'true');
+    }
     setLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      const params = new URLSearchParams(window.location.search);
+      const scrollTo = params.get('scroll');
+      if (scrollTo) {
+        const timer = setTimeout(() => {
+          const element = document.getElementById(scrollTo);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+            // Clean up the URL query parameters so it looks pristine
+            window.history.replaceState(null, '', '/');
+          }
+        }, 600);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [loading]);
 
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden bg-slate-50 dark:bg-slate-950 font-sans selection:bg-blue-100 dark:selection:bg-blue-900 selection:text-blue-900 dark:selection:text-blue-50">
@@ -50,20 +80,20 @@ export default function App() {
           >
             <Home />
             <SectionDivider />
-            <Certifications />
+            <Certifications dbCertifications={data.certifications} />
             <SectionDivider />
-            <InstagramCreation />
+            <InstagramCreation dbVideos={data.instagramVideos} />
             <SectionDivider />
             <Experience />
             <SectionDivider />
             <Projects />
             <SectionDivider />
-            <Training />
+            <Training dbPrograms={data.trainingPrograms} />
             <SectionDivider />
             <Contact />
             
             <footer className="py-12 text-center text-slate-500 dark:text-slate-400 text-sm border-t border-slate-200 dark:border-slate-800">
-              <p>© {new Date().getFullYear()} Sushan Aryal. Built with React & Tailwind CSS.</p>
+              <p>© {new Date().getFullYear()} Sushan Aryal.</p>
             </footer>
 
             <ScrollToTop />

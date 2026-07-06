@@ -38,7 +38,7 @@ export default function Contact() {
   ];
 
   return (
-    <section id="contact" className="py-24 border-t border-slate-200/30 dark:border-slate-800/30">
+    <section id="contact" className="border-t border-slate-200/30 dark:border-slate-800/30">
       <div className="section-container">
         <div className="max-w-5xl mx-auto text-center">
           {/* Header */}
@@ -48,9 +48,6 @@ export default function Contact() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-block px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-4">
-              Get In Touch
-            </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight text-slate-900 dark:text-white">
               Let's <span className="text-blue-600 dark:text-blue-400">Connect</span>
             </h2>

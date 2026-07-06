@@ -1,14 +1,18 @@
+'use client';
+
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { usePathname, useRouter } from 'next/navigation';
 import ThemeToggle from './ThemeToggle';
 
 const navLinks = [
   { label: 'Home', href: '#home' },
-  { label: 'About', href: '#about' },
-  { label: 'Experience', href: '#experience' },
+  { label: 'Certs', href: '#certifications' },
+  { label: 'Videos', href: '#instagram-creation' },
+  { label: 'Work', href: '#experience' },
   { label: 'Projects', href: '#projects' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Certifications', href: '#certifications' },
+  { label: 'Mentorship', href: '#training' },
+  { label: 'Blog', href: '/blog' },
   { label: 'Contact', href: '#contact' }
 ];
 
@@ -16,11 +20,28 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [menuOpen, setMenuOpen] = useState(false);
+  const [canAnimate, setCanAnimate] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  // Disable cross-page layoutId animations during initial page mounts
+  useEffect(() => {
+    setCanAnimate(false);
+    const timer = setTimeout(() => {
+      setCanAnimate(true);
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [pathname]);
 
   useEffect(() => {
+    if (pathname !== '/') return;
+
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
-      const sections = navLinks.map((l) => l.href.replace('#', ''));
+      const sections = navLinks
+        .filter((l) => l.href.startsWith('#'))
+        .map((l) => l.href.replace('#', ''));
+        
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
         if (el && el.getBoundingClientRect().top <= 100) {
@@ -31,23 +52,32 @@ export default function Navbar() {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [pathname]);
 
-  const scrollTo = (href) => {
+  const handleNavClick = (e, href) => {
     setMenuOpen(false);
-    document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+    
+    if (href.startsWith('#')) {
+      e.preventDefault();
+      const sectionId = href.replace('#', '');
+      if (pathname !== '/') {
+        router.push(`/?scroll=${sectionId}`);
+      } else {
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
   };
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'py-4' : 'py-8'}`}>
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6">
         <nav className={`glass-card px-4 py-3 flex items-center justify-between transition-all duration-300 ${scrolled ? 'shadow-lg' : 'shadow-sm'}`}>
 
           {/* Logo / Name */}
-          <div className="px-6">
+          <div className="px-4">
             <a
               href="#home"
-              onClick={(e) => { e.preventDefault(); scrollTo('#home'); }}
+              onClick={(e) => handleNavClick(e, '#home')}
               className="text-xl font-bold text-slate-900 dark:text-white tracking-tight"
             >
               SA<span className="text-blue-600">.</span>
@@ -55,20 +85,22 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-0.5">
             {navLinks.map((link) => {
-              const isActive = activeSection === link.href.replace('#', '');
+              const isActive = link.href.startsWith('#')
+                ? activeSection === link.href.replace('#', '') && pathname === '/'
+                : pathname === link.href;
               return (
                 <a
                   key={link.href}
                   href={link.href}
-                  onClick={(e) => { e.preventDefault(); scrollTo(link.href); }}
-                  className={`relative px-5 py-2.5 text-base font-semibold transition-all duration-200 rounded-lg ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800'}`}
+                  onClick={(e) => handleNavClick(e, link.href)}
+                  className={`relative px-2.5 lg:px-4 py-2 text-sm lg:text-base font-semibold transition-all duration-200 rounded-lg ${isActive ? 'text-blue-600 dark:text-blue-400' : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800'}`}
                 >
                   <span className="relative z-10">{link.label}</span>
                   {isActive && (
                     <motion.span
-                      layoutId="nav-indicator"
+                      layoutId={canAnimate ? "nav-indicator" : undefined}
                       className="absolute inset-0 bg-blue-50 dark:bg-blue-900/30 rounded-lg z-0"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
@@ -118,12 +150,14 @@ export default function Navbar() {
           >
             <div className="flex flex-col gap-1">
               {navLinks.map((link) => {
-                const isActive = activeSection === link.href.replace('#', '');
+                const isActive = link.href.startsWith('#')
+                  ? activeSection === link.href.replace('#', '') && pathname === '/'
+                  : pathname === link.href;
                 return (
                   <a
                     key={link.href}
                     href={link.href}
-                    onClick={(e) => { e.preventDefault(); scrollTo(link.href); }}
+                    onClick={(e) => handleNavClick(e, link.href)}
                     className={`px-4 py-3.5 rounded-xl text-base font-semibold transition-colors ${isActive ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
                   >
                     {link.label}

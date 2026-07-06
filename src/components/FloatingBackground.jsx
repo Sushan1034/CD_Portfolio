@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const floatingIcons = [
@@ -26,16 +28,27 @@ const floatingIcons = [
 ];
 
 const FloatingBackground = React.memo(() => {
-  const icons = React.useMemo(() => floatingIcons.map((icon, i) => ({
-    src: icon,
-    initialX: `${(i % 5) * 20 + Math.random() * 10}vw`,
-    initialY: `${Math.floor(i / 4) * 20 + Math.random() * 10}vh`,
-    duration: 35 + Math.random() * 45,
-    pathX: [Math.random() * 100 + 'vw', Math.random() * 100 + 'vw'],
-    pathY: [Math.random() * 100 + 'vh', Math.random() * 100 + 'vh'],
-    rotate: Math.random() * 360,
-    size: 35 + Math.random() * 35 // Varied sizes
-  })), []);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const icons = React.useMemo(() => {
+    if (!mounted) return [];
+    return floatingIcons.map((icon, i) => ({
+      src: icon,
+      initialX: `${(i % 5) * 20 + Math.random() * 10}vw`,
+      initialY: `${Math.floor(i / 4) * 20 + Math.random() * 10}vh`,
+      duration: 35 + Math.random() * 45,
+      pathX: [Math.random() * 100 + 'vw', Math.random() * 100 + 'vw'],
+      pathY: [Math.random() * 100 + 'vh', Math.random() * 100 + 'vh'],
+      rotate: Math.random() * 360,
+      size: 35 + Math.random() * 35
+    }));
+  }, [mounted]);
+
+  if (!mounted) return null;
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -57,5 +70,7 @@ const FloatingBackground = React.memo(() => {
     </div>
   );
 });
+
+FloatingBackground.displayName = 'FloatingBackground';
 
 export default FloatingBackground;

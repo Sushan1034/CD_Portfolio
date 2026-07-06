@@ -37,7 +37,7 @@ const ScrollToTop = () => {
           whileHover={{ scale: 1.1, y: -5 }}
           whileTap={{ scale: 0.9 }}
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-[100] w-14 h-14 bg-blue-600 text-white rounded-2xl shadow-2xl shadow-blue-500/30 flex items-center justify-center border border-blue-400/30 backdrop-blur-sm group"
+          className="fixed bottom-8 left-8 z-[100] w-14 h-14 bg-blue-600 text-white rounded-2xl shadow-2xl shadow-blue-500/30 flex items-center justify-center border border-blue-400/30 backdrop-blur-sm group"
           aria-label="Scroll to top"
         >
           <div className="absolute inset-0 rounded-2xl bg-blue-400/20 blur-md group-hover:bg-blue-400/40 transition-colors" />

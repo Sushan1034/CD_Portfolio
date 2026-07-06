@@ -4,9 +4,9 @@ export default function Home() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center overflow-hidden pt-28 md:pt-0"
+      className="relative min-h-[85vh] flex items-center overflow-hidden pt-36 md:pt-28 pb-12 md:pb-16"
     >
-      <div className="section-container relative z-10 w-full">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 relative z-10 w-full">
         <div className="flex flex-col md:flex-row items-center md:items-start gap-12 lg:gap-20 text-center md:text-left">
 
           {/* Profile Image */}
@@ -38,11 +38,14 @@ export default function Home() {
               <h1 className="text-4xl xs:text-5xl md:text-7xl font-bold text-slate-900 dark:text-white mb-4 tracking-tight leading-[1.1]">
                 Sushan Aryal
               </h1>
-              <p className="text-lg md:text-2xl font-medium text-blue-600 dark:text-blue-400 mb-6 tracking-tight">
-                AWS Solution Architect Associate | Oracle Architect Associate
+              <p className="text-lg md:text-2xl font-medium text-blue-600 dark:text-blue-400 mb-2 tracking-tight">
+                AWS Solution Architect Associate | AWS Developer Associate
               </p>
-              <p className="text-base md:text-xl text-slate-600 dark:text-slate-300 mb-10 leading-relaxed max-w-xl mx-auto md:mx-0">
-                Building cloud-native and scalable systems. Focused on architecting secure, automated, and high-performance infrastructure on AWS.
+              <p className="text-lg md:text-2xl font-medium text-blue-600 dark:text-blue-400 mb-6 tracking-tight">
+                AWS Cloud Trainer & Mentorship Provider | Cloud Content Creator
+              </p>
+              <p className="text-base md:text-xl text-slate-600 dark:text-slate-300 mb-10 leading-relaxed max-w-2xl mx-auto md:mx-0">
+                Building cloud-native, scalable architectures while training the next generation of cloud talent. Focused on designing secure AWS infrastructures, producing educational tech content, and providing hands-on mentorship for AWS certifications.
               </p>
 
               {/* CTA Buttons */}

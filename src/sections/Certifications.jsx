@@ -1,13 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const certifications = [
+const STATIC_CERTIFICATIONS = [
   {
     title: "AWS Solutions Architect Associate",
     issuer: "Amazon Web Services",
     link: "https://www.credly.com/badges/8cf802c9-2b2e-4e88-84d7-f2c5c08abc21",
     icon: "/SAA1-C03.png",
     color: "from-orange-400 to-orange-600"
+  },
+  {
+    title: "AWS Developer Associate",
+    issuer: "Amazon Web Services",
+    link: "https://www.credly.com/badges/1d338ac4-ad57-4a30-9d10-43feefe4f414/",
+    icon: "/DA.png",
+    color: "from-purple-400 to-purple-600"
   },
   {
     title: "AWS Cloud Practitioner",
@@ -17,7 +24,7 @@ const certifications = [
     color: "from-blue-400 to-blue-600"
   },
   {
-    title: "Oracle Architect Associate",
+    title: "Oracle Certified Architect Associate",
     issuer: "Oracle",
     link: "https://catalog-education.oracle.com/ords/certview/sharebadge?id=91504DD65238D09DBA697AA9D265BEC3E69B56EBC4C592B35E1D611470C99036",
     icon: "/OAA1.png",
@@ -32,27 +39,36 @@ const certifications = [
   }
 ];
 
-export default function Certifications() {
+export default function Certifications({ dbCertifications }) {
+  const certifications = dbCertifications && dbCertifications.length > 0
+    ? dbCertifications.map(c => ({
+        title: c.title,
+        issuer: c.issuer,
+        link: c.link,
+        icon: c.icon_url,
+        color: c.color || "from-blue-400 to-blue-600"
+      }))
+    : STATIC_CERTIFICATIONS;
+
   const [rotation, setRotation] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
+  const angleStep = 360 / certifications.length;
+
   useEffect(() => {
     if (isHovered) return;
     const timer = setInterval(() => {
-      setRotation(prev => prev - 90);
+      setRotation(prev => prev - angleStep);
       setActiveIndex(prev => (prev + 1) % certifications.length);
     }, 4000);
     return () => clearInterval(timer);
-  }, [isHovered]);
+  }, [isHovered, angleStep]);
 
   return (
-    <section id="certifications" className="py-24 relative overflow-hidden bg-slate-50/50 dark:bg-slate-950/50">
+    <section id="certifications" className="relative overflow-hidden bg-slate-50/50 dark:bg-slate-950/50">
       <div className="section-container relative z-10">
         <div className="text-center mb-16">
-          <div className="inline-block px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-4">
-            Carrer Timeline
-          </div>
           <motion.h2
             className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6 tracking-tight"
             initial={{ opacity: 0, y: 20 }}
@@ -85,11 +101,11 @@ export default function Certifications() {
               transition={{ duration: 1, ease: "circOut" }}
             >
               {certifications.map((cert, index) => {
-                const angle = index * 90;
+                const angle = index * angleStep;
                 const isActive = index === activeIndex;
                 
-                // Responsive translateZ
-                const translateZ = typeof window !== 'undefined' && window.innerWidth < 768 ? 140 : 250;
+                // Responsive translateZ (adjusted slightly for 5 items to avoid crowding)
+                const translateZ = typeof window !== 'undefined' && window.innerWidth < 768 ? 150 : 260;
 
                 return (
                   <motion.div
@@ -163,7 +179,7 @@ export default function Certifications() {
                     className="flex-1 inline-flex items-center justify-center gap-3 px-8 py-4 bg-slate-900 dark:bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-600 dark:hover:bg-blue-700 transition-all shadow-lg active:scale-95 group/btn"
                   >
                     Verify Credential
-                    <svg className="w-5 h-5 transition-transform group-hover/btn:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-5 h-5 transition-transform group-hover/btn:translate-x-1" fill="none" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
                   </a>
@@ -176,7 +192,7 @@ export default function Certifications() {
                       key={i}
                       onClick={() => {
                         setActiveIndex(i);
-                        setRotation(i * -90);
+                        setRotation(i * -angleStep);
                       }}
                       className={`h-2.5 rounded-full transition-all duration-500 ${i === activeIndex ? 'w-12 bg-blue-600' : 'w-2.5 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600'}`}
                     />

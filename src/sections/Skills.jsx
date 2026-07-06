@@ -157,7 +157,7 @@ function SkillCard({ skill, index }) {
 
 export default function Skills() {
   return (
-    <section id="skills" className="py-24 relative bg-slate-50/50 dark:bg-slate-950/50 overflow-hidden">
+    <section id="skills" className="relative bg-slate-50/50 dark:bg-slate-950/50 overflow-hidden">
       {/* Decorative background blobs */}
       <div className="absolute top-1/4 -left-24 w-72 h-72 bg-blue-100/30 dark:bg-blue-900/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-1/4 -right-24 w-72 h-72 bg-slate-200/30 dark:bg-slate-800/20 rounded-full blur-3xl pointer-events-none" />
