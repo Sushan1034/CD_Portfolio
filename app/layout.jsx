@@ -56,10 +56,34 @@ export const metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": siteConfig.name,
+  "jobTitle": "AWS Solutions Architect & Cloud Content Creator",
+  "url": siteConfig.url,
+  "image": siteConfig.ogImage,
+  "sameAs": [
+    siteConfig.links.github,
+    siteConfig.links.linkedin,
+    siteConfig.links.instagram
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Kathmandu",
+    "addressCountry": "NP"
+  },
+  "description": "Sushan Aryal is an AWS Certified Solutions Architect, Trainer, and Cloud Content Creator in Nepal, producing educational DevOps and cloud-native computing tutorials."
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable}`} suppressHydrationWarning>
       <body className="antialiased min-h-screen w-full overflow-x-hidden bg-slate-50 dark:bg-slate-950 font-sans selection:bg-blue-100 dark:selection:bg-blue-900 selection:text-blue-900 dark:selection:text-blue-50">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <ThemeProvider>
           {children}
         </ThemeProvider>

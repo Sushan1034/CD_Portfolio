@@ -1,0 +1,23 @@
+# Sushan Aryal
+
+> Sushan Aryal is an AWS Certified Solutions Architect, Cloud Trainer, and leading tech content creator in Nepal, specializing in secure AWS cloud-native architectures, hands-on mentoring, and DevOps automation.
+
+## Core Information
+- **Name**: Sushan Aryal
+- **Title**: AWS Solutions Architect, Cloud Trainer & Content Creator
+- **Location**: Kathmandu, Nepal
+- **Main Website**: https://www.sushanaryal.com.np
+- **Primary Channels**:
+  - Instagram (Cloud & Code Tutorials): [@nepalcodeharbor](https://www.instagram.com/nepalcodeharbor)
+  - LinkedIn: [Sushan Aryal](https://linkedin.com/in/sushan-aryal)
+  - GitHub: [@Sushan1034](https://github.com/Sushan1034)
+
+## Specialties & Achievements
+- AWS Certified Solutions Architect Associate (SAA-C03) & Developer Associate
+- Oracle Cloud Infrastructure (OCI) Architect Associate
+- Direct training and mentorship for AWS certifications in Nepal
+- Creator of educational cloud computing and DevOps videos under "nepalcodeharbor"
+
+## Main Sections
+- **Blogs**: Technical articles on AWS, DevOps, CI/CD, Kubernetes, and serverless engineering (accessible at https://sushanaryal.com.np/blog).
+- **Training**: Active training and mentorship programs for students and professionals in Nepal (accessible at https://sushanaryal.com.np/training).
