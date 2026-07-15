@@ -153,25 +153,37 @@ export default function AIChatbot() {
     return "Hmph. Sushan is a solid cloud architect and developer. Ask me about his AWS certifications, Digo Solutions experience, or mentorship sessions. I can answer, but keep it quick—I need to get back to training.";
   };
 
-  // Query Google Gemini API
-  const queryGemini = async (userText, apiKey) => {
-    try {
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: userText }] }],
-          systemInstruction: { parts: [{ text: SUSHAN_BIO }] }
-        })
-      });
-      const data = await response.json();
-      return data.candidates[0].content.parts[0].text;
-    } catch (e) {
-      console.error(e);
-      return "Hmph, had trouble connecting to my live brain. Here's what I know offline: " + getLocalResponse(userText);
+  // Query Google Gemini API with Failover
+  const queryGemini = async (userText, apiKeys) => {
+    for (const apiKey of apiKeys) {
+      try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: userText }] }],
+            systemInstruction: { parts: [{ text: SUSHAN_BIO }] }
+          })
+        });
+
+        if (!response.ok) {
+          console.warn(`API key ${apiKey.substring(0, 5)}... failed with status ${response.status}`);
+          continue; // Try next key
+        }
+
+        const data = await response.json();
+        return data.candidates[0].content.parts[0].text;
+      } catch (e) {
+        console.error(`Error with API key ${apiKey.substring(0, 5)}...:`, e);
+        // Continue to next key on network error or parsing error
+      }
     }
+    
+    // If all keys fail, fallback to local response
+    console.error("All Gemini API keys failed. Using local fallback.");
+    return "Hmph, had trouble connecting to my live brain. Here's what I know offline: " + getLocalResponse(userText);
   };
 
   const handleSendMessage = async (textToSend = inputText) => {
@@ -187,11 +199,18 @@ export default function AIChatbot() {
     window.speechSynthesis.cancel();
 
     // Check key availability
-    const apiKey = customKey || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+    let apiKeys = [];
+    if (customKey) {
+      apiKeys = [customKey];
+    } else if (process.env.NEXT_PUBLIC_GEMINI_API_KEYS) {
+      apiKeys = process.env.NEXT_PUBLIC_GEMINI_API_KEYS.split(',').map(k => k.trim()).filter(Boolean);
+    } else if (process.env.NEXT_PUBLIC_GEMINI_API_KEY) { // fallback for old env
+      apiKeys = [process.env.NEXT_PUBLIC_GEMINI_API_KEY];
+    }
 
     let botResponseText = '';
-    if (apiKey) {
-      botResponseText = await queryGemini(textToSend, apiKey);
+    if (apiKeys.length > 0) {
+      botResponseText = await queryGemini(textToSend, apiKeys);
     } else {
       // Small simulated delay for local response
       await new Promise(resolve => setTimeout(resolve, 800));

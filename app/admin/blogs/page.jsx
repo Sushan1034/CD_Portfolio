@@ -21,6 +21,7 @@ export default function AdminBlogsPage() {
   const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState('');
   const [content, setContent] = useState(''); // Blog content body
+  const [slug, setSlug] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
@@ -57,6 +58,7 @@ export default function AdminBlogsPage() {
     setTagsInput('');
     setImageFile(null);
     setImageUrl('');
+    setSlug('');
     setErrorMsg('');
     setIsFormOpen(true);
   };
@@ -72,6 +74,7 @@ export default function AdminBlogsPage() {
     setTagsInput((b.tags || []).join(', '));
     setImageFile(null);
     setImageUrl(b.image_url || '');
+    setSlug(b.slug || '');
     setErrorMsg('');
     setIsFormOpen(true);
   };
@@ -111,6 +114,38 @@ export default function AdminBlogsPage() {
     }
   };
 
+  const insertMarkdown = (syntaxBefore, syntaxAfter = '') => {
+    const textarea = document.getElementById('blog-content');
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const selectedText = text.substring(start, end);
+
+    const replacement = syntaxBefore + (selectedText || '') + syntaxAfter;
+    const newContent = text.substring(0, start) + replacement + text.substring(end);
+    
+    setContent(newContent);
+
+    // Restore focus and selection
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(
+        start + syntaxBefore.length,
+        start + syntaxBefore.length + (selectedText || '').length
+      );
+    }, 0);
+  };
+
+  const handleInsertLink = () => {
+    const url = prompt("Enter URL (e.g., /about for internal, or https://... for external):");
+    if (url === null) return;
+    const text = prompt("Enter link text:", "link");
+    if (text === null) return;
+    insertMarkdown(`[${text}](${url})`);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title.trim()) return;
@@ -141,7 +176,9 @@ export default function AdminBlogsPage() {
             upsert: true
           });
 
-        if (uploadError) throw uploadError;
+        if (uploadError) {
+          throw { isSupabaseError: true, ...uploadError, customMessage: "Failed to upload banner image." };
+        }
 
         const { data } = supabase.storage.from('images').getPublicUrl(storagePath);
         finalImageUrl = data.publicUrl;
@@ -153,14 +190,14 @@ export default function AdminBlogsPage() {
         .map(t => t.trim())
         .filter(t => t !== '');
 
-      const generatedSlug = title
+      const finalSlug = (slug.trim() || title)
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/(^-|-$)+/g, '');
 
       const payload = {
         title,
-        slug: generatedSlug,
+        slug: finalSlug,
         excerpt,
         read_time: readTime,
         link: link.trim() || null,
@@ -171,26 +208,38 @@ export default function AdminBlogsPage() {
       };
 
       if (editId) {
-        const { error: updateError } = await supabase
+        const res = await supabase
           .from('blogs')
           .update(payload)
           .eq('id', editId);
 
-        if (updateError) throw updateError;
+        if (res.error) {
+          throw { isSupabaseError: true, ...res.error };
+        }
       } else {
-        const { error: insertError } = await supabase
+        const res = await supabase
           .from('blogs')
           .insert(payload);
 
-        if (insertError) throw insertError;
+        if (res.error) {
+          throw { isSupabaseError: true, ...res.error };
+        }
       }
 
       setIsFormOpen(false);
       loadBlogs();
       alert(editId ? 'Blog updated successfully!' : 'Blog post added successfully!');
     } catch (err) {
-      console.error(err);
-      setErrorMsg(err.message || 'Error occurred during save operations.');
+      console.warn('Blog Save Attempt Failed:', err);
+      
+      let msg = err?.customMessage || err?.message || 'Error occurred during save operations.';
+      
+      // Handle Postgres unique constraint violation (duplicate slug)
+      if (err?.code === '23505') {
+        msg = "A blog post with this Title/Slug already exists. Please use a different title or modify the Custom Slug to be unique.";
+      }
+      
+      setErrorMsg(msg);
     } finally {
       setSubmitting(false);
     }
@@ -315,8 +364,40 @@ export default function AdminBlogsPage() {
                     id="blog-title"
                     required
                     value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={(e) => {
+                      const newTitle = e.target.value;
+                      setTitle(newTitle);
+                      // If it's a new blog, auto-generate the slug from the title
+                      if (!editId) {
+                        const generatedSlug = newTitle
+                          .toLowerCase()
+                          .replace(/[^a-z0-9]+/g, '-')
+                          .replace(/(^-|-$)+/g, '');
+                        setSlug(generatedSlug);
+                      }
+                    }}
                     placeholder="AWS Shared Responsibility Model Demystified"
+                    className="w-full px-4 py-3 bg-[#070b13] border border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600/50 text-white text-sm"
+                  />
+                </div>
+
+                {/* Slug */}
+                <div className="flex flex-col">
+                  <label htmlFor="blog-slug" className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">
+                    Custom Slug
+                  </label>
+                  <input
+                    type="text"
+                    id="blog-slug"
+                    required
+                    value={slug}
+                    onChange={(e) => {
+                      const cleanSlug = e.target.value
+                        .toLowerCase()
+                        .replace(/[^a-z0-9-]+/g, '-');
+                      setSlug(cleanSlug);
+                    }}
+                    placeholder="aws-shared-responsibility-model-demystified"
                     className="w-full px-4 py-3 bg-[#070b13] border border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600/50 text-white text-sm"
                   />
                 </div>
@@ -387,6 +468,94 @@ export default function AdminBlogsPage() {
                   <label htmlFor="blog-content" className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">
                     Blog Article Body (Markdown Content)
                   </label>
+                  
+                  {/* Markdown Helper Toolbar */}
+                  <div className="flex flex-wrap gap-1.5 mb-2 p-1.5 bg-[#05080e] border border-slate-800 rounded-xl">
+                    <button
+                      type="button"
+                      onClick={() => insertMarkdown('**', '**')}
+                      className="px-2.5 py-1 text-[11px] font-extrabold bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white rounded-lg transition-colors cursor-pointer"
+                      title="Bold"
+                    >
+                      B
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertMarkdown('*', '*')}
+                      className="px-2.5 py-1 text-[11px] italic font-serif bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white rounded-lg transition-colors cursor-pointer"
+                      title="Italic"
+                    >
+                      I
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertMarkdown('<u>', '</u>')}
+                      className="px-2.5 py-1 text-[11px] underline bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white rounded-lg transition-colors cursor-pointer"
+                      title="Underline"
+                    >
+                      U
+                    </button>
+                    <div className="w-px h-5 bg-slate-800 align-middle my-auto mx-1" />
+                    <button
+                      type="button"
+                      onClick={() => insertMarkdown('# ')}
+                      className="px-2 py-1 text-[10px] font-bold bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white rounded-lg transition-colors cursor-pointer"
+                      title="Heading 1"
+                    >
+                      H1
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertMarkdown('## ')}
+                      className="px-2 py-1 text-[10px] font-bold bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white rounded-lg transition-colors cursor-pointer"
+                      title="Heading 2"
+                    >
+                      H2
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertMarkdown('### ')}
+                      className="px-2 py-1 text-[10px] font-bold bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white rounded-lg transition-colors cursor-pointer"
+                      title="Heading 3"
+                    >
+                      H3
+                    </button>
+                    <div className="w-px h-5 bg-slate-800 align-middle my-auto mx-1" />
+                    <button
+                      type="button"
+                      onClick={() => insertMarkdown('- ')}
+                      className="px-2 py-1 text-[10px] bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white rounded-lg transition-colors cursor-pointer"
+                      title="List Item"
+                    >
+                      • List
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertMarkdown('> ')}
+                      className="px-2 py-1 text-[10px] bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white rounded-lg transition-colors cursor-pointer"
+                      title="Quote"
+                    >
+                      “ Quote
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertMarkdown('```\n', '\n```')}
+                      className="px-2 py-1 text-[10px] font-mono bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white rounded-lg transition-colors cursor-pointer"
+                      title="Code Block"
+                    >
+                      &lt;/&gt; Code
+                    </button>
+                    <div className="w-px h-5 bg-slate-800 align-middle my-auto mx-1" />
+                    <button
+                      type="button"
+                      onClick={handleInsertLink}
+                      className="px-2.5 py-1 text-[10px] font-bold bg-blue-950/40 hover:bg-blue-600/40 border border-blue-900 text-blue-400 hover:text-white rounded-lg transition-colors cursor-pointer flex items-center gap-1"
+                      title="Insert Link"
+                    >
+                      🔗 Link
+                    </button>
+                  </div>
+
                   <textarea
                     id="blog-content"
                     rows="8"
